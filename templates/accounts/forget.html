@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>忘记密码</title>
+
+</head>
+
+<body>
+
+<form method="post">
+
+    {% csrf_token %}
+
+    请输入绑定的邮箱:<input type="email" placeholder="邮箱" name="email">
+
+    <input type="submit" value="提交">
+
+    {{ msg }}
+
+</form>
+
+</body>
+
+</html>

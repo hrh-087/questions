@@ -1,0 +1,215 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{#{% load thumbnail %}#}
+{% block content %}
+<div class="row">
+    <aside class="profile-info col-lg-9">
+        <!--features carousel start-->
+        <section class="panel">
+              <div class="flat-carousal">
+                  <div id="owl-demo" class="owl-carousel owl-theme">
+                      <div class="item">
+                          <h1>Flatlab is new model of admin dashboard for happy use</h1>
+                          <div class="text-center">
+                              <a href="javascript:;" class="view-all">View All</a>
+                          </div>
+                      </div>
+                      <div class="item">
+                          <h1>Fully responsive and build with Bootstrap 3.0</h1>
+                          <div class="text-center">
+                              <a href="javascript:;" class="view-all">View All</a>
+                          </div>
+                      </div>
+                      <div class="item">
+                          <h1>Responsive Frontend is free if you get this.</h1>
+                          <div class="text-center">
+                              <a href="javascript:;" class="view-all">View All</a>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+{#              <div class="panel-body">#}
+{#                  <ul class="ft-link">#}
+{#                      <li class="active">#}
+{#                          <a href="javascript:;">#}
+{#                              <i class="icon-reorder"></i>#}
+{#                              Sales#}
+{#                          </a>#}
+{#                      </li>#}
+{#                      <li>#}
+{#                          <a href="javascript:;">#}
+{#                              <i class=" icon-calendar-empty"></i>#}
+{#                              promo#}
+{#                          </a>#}
+{#                      </li>#}
+{#                      <li>#}
+{#                          <a href="javascript:;">#}
+{#                              <i class=" icon-camera"></i>#}
+{#                              photo#}
+{#                          </a>#}
+{#                      </li>#}
+{#                      <li>#}
+{#                          <a href="javascript:;">#}
+{#                              <i class=" icon-circle"></i>#}
+{#                              other#}
+{#                          </a>#}
+{#                      </li>#}
+{#                  </ul>#}
+{#              </div>#}
+          </section>
+        <!--features carousel end-->
+        
+        <section class="panel">
+              <header class="panel-heading">
+                  最新动态
+              </header>
+              <div class="panel-body">
+                  <div class="timeline-messages">
+                      {% for answer in recent_answer %}
+                      <!-- Comment -->
+                      <div class="msg-time-chat">
+                          <a href="#" class="message-img"><img class="avatar" src="{{ answer.user.avator_sor.url }}" alt=""></a>
+                          <div class="message-body {% if forloop.counter|divisibleby:2 %}msg-in{% else %}msg-out{% endif %}">
+                              <span class="arrow"></span>
+                              <div class="text">
+                                  <p class="attribution"><a href="#">{{ answer.user.username }}</a>{{ answer.last_modify }}</p>
+                                  <p>回答了<a href="{% url 'repo:question_detail' answer.question.id %}">{{ answer.question.title }}</a></p>
+                              </div>
+                          </div>
+                      </div>
+                      <!-- /comment -->
+                      {% endfor %}
+                  </div>
+              </div>
+          </section>
+
+           <!--最近刷题的同学 start-->
+          <section class="panel">
+                <header class="panel-heading">
+                  最近刷题的同学
+                </header>
+                <div class="panel-body">
+                    {% for user in recent_user %}
+                     <div class="task-thumb">
+                         <img src="{{ user.avator_sm.url }}" alt="">
+                         <div class="clearfix"></div>
+                         <a href="#">{{ user.username }}</a>
+                    </div>
+                    {% endfor %}
+                </div>
+          </section>
+          <!--custom chart end-->
+    </aside>
+    <aside class="profile-info col-lg-3">
+          <!--follower start-->
+          <section class="panel">
+              <div class="follower">
+                  <div class="panel-body">
+
+                      <div class="follow-ava">
+{#                          <img src="{% static 'img/follower-avatar.jpg' %}" alt="">#}
+                          <img src="{{ request.user.avator_sm.url }}" alt="">
+                      </div>
+                      <h4>{{ request.user.username }}</h4>
+                      <h4>您已完成 {{ user_data.answer_num }} 道面试题，加油！</h4>
+                  </div>
+              </div>
+              <footer class="follower-foot">
+                  <ul>
+                      <li>
+                          <h4>{{ user_data.answer_num }}/{{ user_data.question_all }}</h4>
+                          <p>刷题量：{%  widthratio user_data.answer_num user_data.question_all 100 %} %</p>
+                      </li>
+                      <li>
+                          <h4>第{{ user_data.rank.rank }}名</h4>
+                          <p>当前排名：{{ user_data.rank.rank }}/{{ user_data.user_sum }}</p>
+                      </li>
+                  </ul>
+              </footer>
+          </section>
+          <!--follower end-->
+          <!--热门题目 start-->
+          <section class="panel">
+              <div class="panel-body progress-panel">
+                  <div class="task-progress">
+                      <h1>热门算法题目</h1>
+                      <p>答题人数最多的题目</p>
+                  </div>
+              </div>
+              <table class="table table-hover personal-task">
+                  <tbody>
+                  {% for item in hot_question %}
+                  <tr>
+                      <td>{{ forloop.counter }}</td>
+                      <td>
+                          <a href="{% url 'repo:question_detail' item.id %}" title="{{ item.title }}">{{ item.id }}. {{ item.title|truncatechars:10 }}</a>
+                      </td>
+                      <td>
+                          {% if item.grade == 1 %}
+                              <span class="label label-info">入门</span>
+                          {% elif  item.grade == 2 %}
+                              <span class="label label-info">简单</span>
+                          {% elif  item.grade == 3 %}
+                              <span class="label label-success">一般</span>
+                          {% elif  item.grade == 4 %}
+                              <span class="label label-danger">困难</span>
+                          {% elif  item.grade == 5 %}
+                              <span class="label label-danger">超难</span>
+                          {% endif %}
+                      </td>
+                  </tr>
+                  {% endfor %}
+                  </tbody>
+              </table>
+          </section>
+          <!--work progress end-->
+          <!--近30天刷题用户排行榜 start-->
+          <section class="panel">
+              <div class="panel-body progress-panel">
+                  <div class="task-progress">
+                      <h1>近30天刷题用户排行榜</h1>
+                      <p></p>
+                  </div>
+              </div>
+              <table class="table table-hover personal-task">
+                  <tbody>
+                  {% for item in hot_user %}
+                      <tr>
+                          <td>{{ forloop.counter }}</td>
+                          <td>
+                              <a href="">{{ item.user__username }}</a>
+                          </td>
+                          <td>
+                              <span>{{ item.id__count }}/{{ user_data.question_all }}</span>
+                          </td>
+                      </tr>
+                  {% endfor %}
+                  </tbody>
+              </table>
+          </section>
+          <!--work progress end-->
+    </aside>
+</div>
+{% endblock %}
+
+{% block load_js %}
+  <script src="{% static 'js/owl.carousel.js' %}" ></script>
+  <script>
+
+      //owl carousel
+
+      $(document).ready(function() {
+          $("#owl-demo").owlCarousel({
+              navigation : true,
+              slideSpeed : 300,
+              paginationSpeed : 400,
+              singleItem : true
+
+          });
+      });
+  </script>
+{% endblock %}
+
+{% block load_css %}
+       <link rel="stylesheet" href="{% static 'css/owl.carousel.css' %}" type="text/css">
+{% endblock %}

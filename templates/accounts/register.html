@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>忘记密码</title>
+
+</head>
+
+<body>
+
+<form method="post">
+
+    {% csrf_token %}
+
+    密码1:<input type="password" placeholder="请输入密码" name="password1">
+
+    密码2:<input type="password" placeholder="请再次输入密码" name="password2">
+
+    <input type="submit" value="提交">
+
+    {{ msg }}
+
+</form>
+
+</body>
+
+</html>

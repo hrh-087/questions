@@ -1,0 +1,190 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block content %}
+<div class="row">
+    <div class="col-md-9">
+        <div class="gritter"></div>
+        <!--题目详情 start-->
+        <section class="panel">
+            <div class="panel-body progress-panel">
+              <div class="task-progress">
+                  <h1 style="color: #000000;"><span class="label label-info" style="margin-bottom: 5px;">入门</span> {{ object.id }}.{{ object.title }}</h1>
+              </div>
+            </div>
+        </section>
+        <!--tab nav start-->
+        <section class="panel">
+            <header class="panel-heading tab-bg-dark-navy-blue ">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="active">
+                        <a href="#home" id="tab_home" aria-controls="home" role="tab" data-toggle="tab">题目描述</a>
+                    </li>
+                    <li role="presentation">
+                        <a href="#answer" id="tab_answer" aria-controls="answer" role="tab" data-toggle="tab">参考答案</a>
+                    </li>
+                    <li role="presentation">
+                        <a href="#other_answer" id="tab_other_answer" aria-controls="other_answer" role="tab" data-toggle="tab">其他回答</a>
+                    </li>
+                    <li role="presentation">
+                        <a href="#test" id="tab_test" aria-controls="test" role="tab" data-toggle="tab">测试</a>
+                    </li>
+                </ul>
+            </header>
+            <div class="panel-body">
+                <div class="tab-content">
+                    <div id="home" class="tab-pane active">
+                        {# 题目内容 #}
+                        <h4>题目内容</h4>
+                        {{ other_answer }}
+                        <div class="question_content">
+                            {% if object.content %}
+                                {{object.content }}
+                            {% else %}
+                                {{ object.title }}
+                            {% endif %}
+                        </div>
+                        <hr>
+                        {# 我的回答:一个Form表单#}
+                        <h4>我的回答</h4>
+                        <div class="my_answer">
+                            {% if my_answer %}
+                                {{ my_answer.0.answer }}
+                            {% else %}
+                                暂未作答
+                                {{ my_answer }}
+                            {% endif %}
+                        </div>
+                        <hr>
+                        <h4>提交回答</h4>
+                        <div class="answer_submit">
+                            <form method="post" id="my_anser_form">
+                                {% csrf_token %}
+                                <textarea name="answer" id="my_answer" class="form-control" style="height: 300px;"></textarea>
+                                <br/>
+                                <button type="button" id="answer_button" class="btn btn-primary">提交</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div id="answer" class="tab-pane" >
+                        {% if my_answer%}
+                            {% if object.answer %}
+                                <p>{{ object.answer }}</p>
+                            {% else %}
+                                暂无参考回答
+                            {% endif %}
+                        {% else %}
+                            请回答后再查看参考答案。
+                        {% endif %}
+                        {# todo 加评论功能 #}
+                    </div>
+                    <div id="other_answer" class="tab-pane" >
+                        {% if my_answer %}
+                            Wait Ajax
+                        {% else %}
+                            请答题后再查看其他人答案。
+                        {% endif %}
+                    </div>
+                    <div id="test" class="tab-pane">
+                            这是一个测试的tab
+                    </div>
+                </div>
+
+            </div>
+        </section>
+        <!--tab nav start-->
+    </div>
+    <div class="col-md-3">
+        {% include 'right.html' %}
+    </div>
+</div>
+{% endblock %}
+
+{% block load_css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/gritter/css/jquery.gritter.css' %}" />
+{% endblock %}
+
+{% block load_js %}
+    <script type="text/javascript" src="{% static 'assets/gritter/js/jquery.gritter.js' %}"></script>
+        <script>
+         // 当页面加载完成
+         $(function () {
+             // 点击按钮
+             $("#answer_button").click(function () {
+                 // 提交答案
+                $.ajax({
+                    url: "{% url 'repo:question_detail' object.id %}",
+                    type: "POST",
+                    dataType: "json",
+                    data: $("#my_anser_form").serialize(),
+                    // 将csrf_token参数传递过去
+                    beforeSend:function (xhr, settings) {
+                        xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+                    },
+                    success: function (data) {
+                        console.log(data);
+                        $.gritter.add({
+                            title:"提交结果",
+                            text:data.msg
+                        });
+                        // 更新我的回答
+                        $(".my_answer").html(data.my_answer.answer);
+
+                        // 清空表单
+                        $("#my_answer").val("");
+
+                        // 跳转到#home位置
+                        $("html, body").animate({
+                        scrollTop: $("#home").offset().top }, {duration: 500,easing: "swing"});
+                    }
+                })
+             });
+             $("#tab_answer").click(function () {
+                 //显示参考答案
+                 // ajax请求数据：/apis/answer/id/
+                 // 将请求的结果显示到页面上
+                console.log($(this).attr("href"));
+                content_em = $($(this).attr("href"));
+                $.ajax({
+                    url: '/apis/answer/{{ object.id }}/',
+                    type: 'GET',
+                    success: function (data) {
+                        if(data.answer){
+                            content_em.html(data.answer);
+                        }else{
+                            content_em.html("暂无参考答案");
+                        }
+                    },
+                    error: function () {
+                        content_em.html("加载失败，请联系管理员！");
+                    }
+                });
+             });
+
+             $("#tab_other_answer").click(function () {
+                // 其他人的答案
+                 // ajax请求数据:/apis/other_answer/id/
+                 // 将请求的结果显示到页面上
+                console.log($(this).attr("href"));
+                content_em = $($(this).attr("href"));
+                $.ajax({
+                    url: '/apis/other_answer/{{ object.id }}/',
+                    type: 'GET',
+                    success: function (data) {
+                        if(data){
+                            content_em.html(data);
+                        }else{
+                            content_em.html("暂无参考答案");
+                        }
+                    },
+                    error: function () {
+                        content_em.html("加载失败，请联系管理员！");
+                    }
+                });
+             });
+             });
+
+    </script>
+
+{% endblock %}
+

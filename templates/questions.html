@@ -1,0 +1,218 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block content %}
+<div class="row">
+    <div class="col-md-9">
+        <!--刷题汇报 start-->
+        <section class="panel">
+          <div class="revenue-head">
+              <span>
+                  <i class="icon-bar-chart"></i>
+              </span>
+              <h3>刷题汇报</h3>
+          </div>
+          <div class="panel-body">
+              <div class="row">
+                    <div id="toolbar_table_questions">
+                        <form class="form-inline" role="form">
+                            <div class="form-group">
+                                <select class="form-control" id="grade" name="grade">
+                                    <option value="0"> 选择难度 </option>
+                                    {% for item in grades %}
+                                    <option value="{{ item.0 }}"> {{ item.1 }} </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <select class="form-control" id="category" name="category">
+                                    <option value="0"> 选择分类 </option>
+                                    {% for item in category %}
+                                    <option value="{{ item.id }}">{{ item.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <select class="form-control" id="status" name="status">
+                                    <option value="2"> 选择状态 </option>
+                                    <option value="0"> 待刷 </option>
+                                    <option value="1"> 已刷 </option>
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+
+                    <table id="table_questions" name="table_questions"
+                        data-toggle="table"
+                        data-unique-id="id"
+                        data-id-table="advancedTable"
+                        {#分页方式：服务端、客户端分页 #}
+                        data-side-pagination="server"
+                        data-toolbar="#toolbar_table_questions"
+                        data-show-columns="true"
+                        data-page-list="[10, 25, 50, 100, ALL]"
+                        data-pagination="true"
+{#                        data-page-size="25"#}
+                        data-pagination-first-text="首页"
+                        data-pagination-pre-text="上一页"
+                        data-pagination-next-text="下一页"
+                        data-pagination-last-text="末页"
+                        data-show-refresh="true"
+                        data-query-params="queryParams"
+                        data-url="/apis/questions/"
+                        data-show-export="false"
+                        data-export-types="['excel']"
+                        data-export-options='{
+                        "fileName": "三创题库",
+                        "worksheetName": "所有习题",
+                        }'>
+                    <thead>
+                    <tr>
+                      <th data-field="state" data-checkbox="true"></th>
+                      <th data-field="id">序号</th>
+                      <th data-field="title"
+                          data-formatter = "titleFormatter">标题</th>
+                      <th data-field="grade"
+                            data-formatter = "gradeFormatter"
+                      >难度</th>
+                      <th data-field="answer"
+                                data-formatter = "answerFormatter"
+                      >答题率</th>
+                      <th data-field="oper"
+                          data-formatter="operateFormatter"
+                          data-events="operateEvents"
+                      >操作</th>
+                    </tr>
+                    </thead>
+                 </table>
+              </div>
+          </div>
+        </section>
+        <!--revenue end-->
+    </div>
+    <div class="col-md-3">
+        {% include 'right.html' %}
+    </div>
+</div>
+{% endblock %}
+{% block load_js %}
+    <script src="{% static 'assets/bootstrap-table/bootstrap-table.js' %}"></script>
+    <script src="{% static 'assets/bootstrap-table/locale/bootstrap-table-zh-CN.min.js' %}"></script>
+    <script src="{% static 'assets/bootstrap-table/tableExport.js' %}"></script>
+    <script src="{% static 'assets/bootstrap-table/extensions/export/bootstrap-table-export.js' %}"></script>
+    <script>
+        var $table = $('#table_questions');
+        var $select_grade = $('#grade');
+        var $select_category = $('#category');
+        var $select_status = $('#status');
+        $(function () {
+            // 切换难度
+            $select_grade.change(function () {
+                $table.bootstrapTable('refresh');
+            });
+            // 切换分类
+            $select_category.change(function () {
+                $table.bootstrapTable('refresh');
+            });
+            // 切换状态
+            $select_status.change(function () {
+                $table.bootstrapTable('refresh');
+            });
+        });
+
+
+
+        // 生成发送给服务器的请求数据
+        function  queryParams(tableParams) {
+            var params = {};
+            params['limit'] = tableParams.limit;
+            params['offset'] = tableParams.offset;
+            params['page'] = $table.bootstrapTable('getOptions').pageNumber
+            params['search'] = $('#search').val();
+            $ ('#toolbar_table_questions').find('select[name]').each(
+                function () {
+                    params[$(this).attr('name')] = $(this).val();
+                }
+            );
+            return params
+        }
+        // 数据显示格式
+        function gradeFormatter(value,row,index) {
+            // value =>本来数据
+            // row => 本来的一行数据
+            // index => 数据在当前页的索引位置（从0开始）
+            console.log(value);
+            console.log(row);
+            console.log(index);
+            html = '<span class="label label-default">未知</span>';
+            if (value == 1){
+                html = '<span class="label label-info">入门</span>'
+            }else if(value == 2){
+                html = '<span class="label label-info">简单</span>'
+            }else if(value == 3) {
+                html = '<span class="label label-success">一般</span>'
+            }else if(value == 4){
+                html = '<span class="label label-danger">困难</span>'
+            }else if(value == 5) {
+                html = '<span class="label label-danger">超难</span>'
+            }
+            return html
+        }
+        function titleFormatter(value,row,index) {
+            url = "/question_detail/" + row.id + "/";
+            return "<a href = '" + url + "'>" + value + "</a>";
+
+{#            url_question_detail = "{% url 'repo:question_detail' '0000' %}";#}
+{#            url_question_detail = url_question_detail.replace('0000', row.id);#}
+{#            return "<a href='"+url_question_detail+"'>"+row.title.substring(0, 35)+"</a>";#}
+        }
+
+        function answerFormatter(value,row,index) {
+            return  '17%'
+
+        }
+
+        function operateFormatter(value, row, index) {
+            if(row.collection == true){
+                li = '<i class="glyphicon glyphicon-heart question-id-'+row.id+'"></i>'
+            }else{
+                li = '<i class="glyphicon glyphicon-heart-empty question-id-'+row.id+'"></i>'
+            }
+            return [
+                '<a class="like" href="javascript:void(0)" title="收藏">',
+                li,
+                '</a>',
+            ].join('');
+
+        }
+        operateEvents = {
+            'click .like':function (e,value,row) {
+{#                alert("123");#}
+                $.ajax({
+                    url: '/apis/question/collection/'+ row.id +'/',
+                    type: 'GET',
+        {#            dataType: 'json',#}
+                    success: function (data) {
+                        //alert(data);
+                        console.log(data);
+                        if(data.code == 200){
+                            obj_a = $(".question-id-"+row.id);
+                            if(data.msg.status){obj_a.attr("class", "glyphicon glyphicon-heart "+"question-id-"+row.id)}
+                            else{obj_a.attr("class", "glyphicon glyphicon-heart-empty "+"question-id-"+row.id)}
+                        }
+                    },
+                    error: function () {
+                        alert('error');
+            }
+        })
+    }
+}
+
+
+
+
+    </script>
+{% endblock %}
+
+{% block load_css %}
+<link rel="stylesheet" href="{% static 'assets/bootstrap-table/bootstrap-table.css' %}">
+{% endblock %}

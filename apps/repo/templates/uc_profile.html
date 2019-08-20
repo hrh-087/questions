@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html style="overflow: hidden;" class="js cssanimations" lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="Mosaddek">
+    <meta name="keyword" content="FlatLab, Dashboard, Bootstrap, Admin, Template, Theme, Responsive, Fluid, Retina">
+    <link rel="shortcut icon" href="img/favicon.html">
+
+    <title>-题库系统</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <!--external css-->
+    <link href="/static/assets/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="/static/css/style.css" rel="stylesheet">
+    <link href="/static/css/style-responsive.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/avator/css/amazeui.min.css">
+    <link rel="stylesheet" href="/static/avator/css/amazeui.cropper.css">
+    <link rel="stylesheet" href="/static/avator/css/custom_up_img.css">
+    <style type="text/css">
+        .up-img-cover {width: 100px;height: 100px;}
+        .up-img-cover img{width: 100%;}
+    </style>
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 tooltipss and media queries -->
+    <!--[if lt IE 9]>
+      <script src="/static/js/html5shiv.js"></script>
+      <script src="/static/js/respond.min.js"></script>
+    <![endif]-->
+  <style>
+      body{
+          font-size: 14px; !important;
+      }
+  </style>
+  </head>
+<body>
+    <div class="container">
+      <section id="container" class="">
+          <!--header start-->
+          <header class="header white-bg">
+              <!--logo start-->
+              <a href="#" class="logo">三创<span>题库</span></a>
+              <!--logo end-->
+              <div class="top-nav">
+                  <!-- Collect the nav links, forms, and other content for toggling -->
+                  <ul class="nav navbar-nav">
+                    <li class="active">
+                          <a class="" href="/">
+
+                              <span> 首页 </span>
+                          </a>
+                    </li>
+                    <li class="">
+                      <a class="" href="/question/">
+
+                          <span> 校招题 </span>
+                      </a>
+                    </li>
+                  </ul>
+                  <ul class="nav pull-right top-menu">
+                      <li>
+                          <form action="/question/">
+                             <input type="text" class="form-control search" placeholder="Search" name="search" id="search" value="">
+                          </form>
+                      </li>
+                      <!-- user login dropdown start-->
+                      <li class="dropdown">
+                          <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                              <img alt="" src="/static/img/1534323246.png" height="30px">
+
+                              <span class="username">admin</span>
+                              <b class="caret"></b>
+                          </a>
+                          <ul class="dropdown-menu">
+                              <div class="log-arrow-up"></div>
+                              <li><a class="" href="/uc/profile/"> 个人资料 </a></li>
+                              <li><a class="" href="/uc/change_passwd/"> 修改密码 </a></li>
+                              <li><a class="" href="/uc/answer/"> 我的回答 </a></li>
+                              <li><a class="" href="/uc/collect/"> 我的收藏 </a></li>
+                              <li><a class="" href="#myModal-1" data-toggle="modal"> 贡献题目 </a></li>
+                              <li><a class="" href="/uc/contribut/"> 我的贡献 </a></li>
+                              <li><a class="" href="/apps/accounts/logout/"> 退出 </a></li>
+                          </ul>
+                      </li>
+                      <!-- user login dropdown end -->
+                  </ul>
+              </div>
+          </header>
+          <!--header end-->
+          <!--main content start-->
+          <section id="main-content">
+              <section class="wrapper">
+                  <!-- page start-->
+                    <div class="row">
+                      <aside class="profile-info col-lg-3">
+                        <div class="panel">
+                          <div class="panel-body">
+                            <ul class="nav nav-pills nav-stacked">
+                                <li role="presentation" class="active"><a href="/uc/profile/">个人资料</a></li>
+                                <li role="presentation" class=""><a href="/uc/change_passwd/">修改密码</a></li>
+                                <li role="presentation" class=""><a href="/uc/answer/">我的回答</a></li>
+                                <li role="presentation" class=""><a href="/uc/collect/">我的收藏</a></li>
+                                <li role="presentation" class=""><a href="/uc/contribut/">我的贡献</a></li>
+                            </ul>
+                          </div>
+                        </div>
+                      </aside>
+                      <aside class="profile-info col-lg-9">
+                          <section>
+                              <div class="row">
+                                  <div class="col-lg-12">
+                                      <div class="panel">
+                                          <div class="panel-body">
+                                              <h4>个人信息</h4>
+                                              <hr>
+                                              <div class="row">
+                                                  <div class="col-md-3">
+                                                    <div class="up-img-cover" id="up-img-touch">
+                                                        <img class="am-circle" alt="点击图片上传" src="/static/img/1534323246.png" data-am-popover="{content: '点击上传', trigger: 'hover focus'}">
+                                                    </div>
+                                                    <div><a style="text-align: center; display: block;" id="pic"></a></div>
+                                                  </div>
+                                                  <div class="col-md-6">
+                                                  <form class="form-horizontal" role="form" method="post">
+                                                      <div class="form-group">
+                                                          <label for="inputEmail" class="col-lg-3 control-label">邮箱</label>
+                                                          <div class="col-lg-9">
+                                                              <input name="email" type="email" class="form-control" id="inputEmail" value="aa@a.com" required="">
+                                                          </div>
+                                                      </div>
+                                                      <div class="form-group">
+                                                          <label for="inputRealName" class="col-lg-3 control-label">真实姓名</label>
+                                                          <div class="col-lg-9">
+                                                              <input name="realname" type="text" class="form-control" id="inputRealName" value="liu1" required="">
+                                                          </div>
+                                                      </div>
+                                                      <div class="form-group">
+                                                          <label for="inputTel" class="col-lg-3 control-label">手机号</label>
+                                                          <div class="col-lg-9">
+                                                              <input name="mobile" type="tel" class="form-control" id="inputTel" value="1231231111" required="">
+                                                          </div>
+                                                      </div>
+                                                      <div class="form-group">
+                                                          <label for="inputQQ" class="col-lg-3 control-label">QQ</label>
+                                                          <div class="col-lg-9">
+                                                              <input name="qq" type="text" class="form-control" id="inputQQ" value="88888111" minlength="5" required="">
+                                                          </div>
+                                                      </div>
+                                                      <div class="form-group">
+                                                          <div class="col-lg-offset-3 col-lg-9">
+                                                              <button type="submit" class="btn btn-danger">提交</button>
+                                                          </div>
+                                                      </div>
+                                                 </form>
+
+
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                                    <!--图片上传框-->
+                                    <div class="am-modal am-modal-no-btn up-frame-bj " tabindex="-1" id="doc-modal-1">
+                                      <div class="am-modal-dialog up-frame-parent up-frame-radius">
+                                        <div class="am-modal-hd up-frame-header">
+                                           <label>修改头像</label>
+                                          <a href="javascript: void(0)" class="am-close am-close-spin" data-am-modal-close="">×</a>
+                                        </div>
+                                        <div class="am-modal-bd  up-frame-body">
+                                          <div class="am-g am-fl">
+                                            <div class="am-form-group am-form-file">
+                                              <div class="am-fl">
+                                                <button type="button" class="am-btn am-btn-default am-btn-sm">
+                                                  <i class="am-icon-cloud-upload"></i> 选择要上传的文件</button>
+                                              </div>
+                                              <input type="file" id="inputImage">
+                                            </div>
+                                          </div>
+                                          <div class="am-g am-fl">
+                                            <div class="up-pre-before up-frame-radius">
+                                                <img alt="" src="" id="image">
+                                            </div>
+                                            <div class="up-pre-after up-frame-radius">
+                                            </div>
+                                          </div>
+                                          <div class="am-g am-fl">
+                                            <div class="up-control-btns">
+                                                <span class="am-icon-rotate-left" onclick="rotateimgleft()"></span>
+                                                <span class="am-icon-rotate-right" onclick="rotateimgright()"></span>
+                                                <span class="am-icon-check" id="up-btn-ok" url="/apis/change_avator/"></span>
+                                            </div>
+                                          </div>
+
+                                        </div>
+                                      </div>
+                                    </div>
+
+                                    <!--加载框-->
+                                    <div class="am-modal am-modal-loading am-modal-no-btn" tabindex="-1" id="my-modal-loading">
+                                      <div class="am-modal-dialog">
+                                        <div class="am-modal-hd">正在上传...</div>
+                                        <div class="am-modal-bd">
+                                          <span class="am-icon-spinner am-icon-spin"></span>
+                                        </div>
+                                      </div>
+                                    </div>
+
+                                    <!--警告框-->
+                                    <div class="am-modal am-modal-alert" tabindex="-1" id="my-alert">
+                                  <div class="am-modal-dialog">
+                                    <div class="am-modal-hd">信息</div>
+                                    <div class="am-modal-bd" id="alert_content">
+                                          成功了
+                                    </div>
+                                    <div class="am-modal-footer">
+                                      <span class="am-modal-btn">确定</span>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                          </section>
+                      </aside>
+                    </div>
+                  <!-- page end-->
+              </section>
+          </section>
+          <!--main content end-->
+      </section>
+    </div>
+
+    <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="10" id="myModal-1" class="modal fade">
+<div class="modal-dialog">
+  <div class="modal-content">
+      <div class="modal-header">
+          <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+          <h4 class="modal-title">贡献题目</h4>
+      </div>
+      <div class="modal-body">
+
+          <form class="form-horizontal" role="form" method="post" action="/question/">
+          <input type="hidden" name="csrfmiddlewaretoken" value="e1JMNGGJZbZ6E6YxsxnsFv6mHeUmK2WstHgCn1AQDT8FlMc6ptacNKHoRdtJanPc">
+              <div class="form-group">
+                  <label for="inputQuestionTitle" class="col-lg-2 control-label">标题</label>
+                  <div class="col-lg-10">
+                      <input type="text" class="form-control" id="inputQuestionTitle" name="title" placeholder="标题">
+                  </div>
+              </div>
+               <div class="form-group">
+                    <label for="inputQuestionTitle" class="col-lg-2 control-label">分类</label>
+                    <div class="col-lg-10">
+                        <select class="form-control" id="分类" name="category">
+                            <option value="0"> 选择分类 </option>
+
+                                <option value="1">Python</option>
+
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputQuestionTitle" class="col-lg-2 control-label">内容</label>
+                    <div class="col-lg-10">
+                        <textarea type="text" class="form-control" id="inputQuestionTitle" name="content" placeholder="内容"></textarea>
+                    </div>
+                </div>
+              <div class="form-group">
+                  <div class="col-lg-offset-2 col-lg-10">
+                      <button type="submit" class="btn btn-default">提交</button>
+                  </div>
+              </div>
+          </form>
+
+      </div>
+
+  </div>
+</div>
+</div>
+
+    <!-- js placed at the end of the document so the pages load faster -->
+    <script src="/static/js/jquery.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+    <script src="/static/js/jquery.scrollTo.min.js"></script>
+    <script src="/static/js/jquery.nicescroll.js" type="text/javascript"></script>
+
+    <!--common script for all pages-->
+    <script src="/static/js/common-scripts.js"></script><div id="ascrail2000" class="nicescroll-rails" style="width: 6px; z-index: 1000; background: rgb(64, 64, 64) none repeat scroll 0% 0%; cursor: default; position: fixed; top: 0px; height: 100%; right: 0px; display: block; opacity: 0;"><div style="position: relative; top: 60px; float: right; width: 6px; height: 291px; background-color: rgb(232, 64, 63); background-clip: padding-box; border-radius: 10px;"></div></div><div id="ascrail2000-hr" class="nicescroll-rails" style="height: 6px; z-index: 1000; background: rgb(64, 64, 64) none repeat scroll 0% 0%; position: fixed; left: 0px; width: 100%; bottom: 0px; cursor: default; display: none; opacity: 0;"><div style="position: relative; top: 0px; height: 6px; width: 1366px; background-color: rgb(232, 64, 63); background-clip: padding-box; border-radius: 10px;"></div></div>
+
+    <script src="/static/avator/js/amazeui.min.js" charset="utf-8"></script>
+    <script src="/static/avator/js/cropper.min.js" charset="utf-8"></script>
+    <script src="/static/js/custom.js" charset="utf-8"></script>
+    <script src="/static/avator/js/custom_up_img.js" charset="utf-8"></script>
+
+</body>
+</html>

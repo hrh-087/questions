@@ -1,0 +1,50 @@
+{% extends 'uc_base.html' %}
+{% load staticfiles %}
+{% block uc_content %}
+  <div class="row">
+      <div class="col-lg-12">
+          <section class="panel">
+              <header class="panel-heading">
+                  Dynamic Table
+              </header>
+              <table class="table table-striped border-top" id="sample_1">
+              <thead>
+              <tr>
+                  <th style="width:8px;"><input type="checkbox" class="group-checkable" data-set="#sample_1 .checkboxes" /></th>
+                  <th class="hidden-phone">问题</th>
+                  <th class="hidden-phone">该问题被回答的次数</th>
+                  <th class="hidden-phone">本人收藏的时间</th>
+              </tr>
+              </thead>
+                  <tbody>
+{#                  x{{ my_collections.0 }}x#}
+{#                  x{{ my_collections.1 }}x#}
+{#                  问题收藏#}
+                  {% for question_collect in my_collect.1 %}
+                      <tr class="odd gradeX">
+                          <td><input type="checkbox" class="checkboxes" value="1" /></td>
+                          <td><a href="{% url 'repo:question_detail' question_collect.question.id%}">{{ question_collect.question.id }}-{{ question_collect.question.title }}</a></td>
+                          <td>{{ question_collect.question.answers_set.all|length }}</td>
+                          <td>{{ question_collect.create_time }}</td>
+                      </tr>
+                  {% endfor %}
+
+{#                    收藏的回答#}
+                  {% for answer_collect in my_collect.0 %}
+                      <tr class="odd gradeX">
+                          <td><input type="checkbox" class="checkboxes" value="1" /></td>
+                          <td><a href="{% url 'repo:question_detail' answer_collect.answer.question.id %}">{{ answer_collect.answer.question.id }}-{{ answer_collect.answer.question.title}}</a></td>
+                          <td>{{ answer_collect.answer.question.answers_set.all|length }}</td>
+                          <td>{{ answer_collect.create_time }}</td>
+                  {% endfor %}
+              </table>
+          </section>
+      </div>
+  </div>
+  <!-- page end-->
+{% endblock %}
+{% block load_js %}
+    <script type="text/javascript" src="{% static 'assets/data-tables/jquery.dataTables.js' %}"></script>
+    <script type="text/javascript" src="{% static 'assets/data-tables/DT_bootstrap.js'%}"></script>
+    <script src="{% static 'js/dynamic-table.js' %}"></script>
+{% endblock %}

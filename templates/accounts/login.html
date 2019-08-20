@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="Mosaddek">
+    <meta name="keyword" content="FlatLab, Dashboard, Bootstrap, Admin, Template, Theme, Responsive, Fluid, Retina">
+    <link rel="shortcut icon" href="http://127.0.0.1:8000/accounts/login/img/favicon.html">
+    <title>用户登录-三创题库系统</title>
+    <!-- Bootstrap core CSS -->
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/css/bootstrap-reset.css" rel="stylesheet">
+    <!--external css-->
+    <link href="/static/assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
+    <!-- Custom styles for this template -->
+    <link href="/static/css/style.css" rel="stylesheet">
+    <link href="/static/css/style-responsive.css" rel="stylesheet" />
+    <script src="/static/js/jquery.js"></script>
+</head>
+    <body class="login-body">
+        <div class="container">
+          <form class="form-signin" action="{% url 'accounts:login' %}" method="post">
+              {% csrf_token %}
+            <h2 class="form-signin-heading">登录</h2>
+            <div class="login-wrap">
+                {{ form.username }}
+                {{ form.password }}
+                {{ form.captcha }}
+                <a href="javascript:void(0);"><img id="captcha_img" src="" onclick="get_captcha_img();"></a>
+                <div class="user-reg">
+                    <a href="{% url 'accounts:register' %}"> 用户注册</a>
+                    <span class="pull-right"> <a href="{% url 'accounts:password_forget' %}"> 忘记密码?</a></span>
+                </div>
+                <button class="btn btn-lg btn-login btn-block" type="submit">登录</button>
+            </div>
+          </form>
+        </div>
+    <script>
+        //获取图形验证码信息
+        get_captcha_img();
+        function get_captcha_img() {
+          $.ajax({
+            url: '{% url 'apis:get_captcha' %}',
+            type: 'GET',
+            dataType: 'text',
+            success: function (data) {
+                // 将数据生成图片
+                // todo
+{#                var pic = to_pic(data);#}
+{#                $('#captcha_img').attr('src', pic);#}
+                $('#captcha_img').attr('src', data);
+            }
+        });
+
+        }
+    </script>
+    </body>
+</html>

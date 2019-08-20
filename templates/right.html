@@ -1,0 +1,277 @@
+{% load staticfiles %}
+<!--刷题汇报 start-->
+<section class="panel">
+  <div class="revenue-head">
+      <span>
+          <i class="icon-bar-chart"></i>
+      </span>
+      <h3>刷题汇报</h3>
+  </div>
+  <div class="panel-body">
+      <div class="row">
+          <div class="col-lg-6 col-sm-6 text-center">
+              <div class="easy-pie-chart">
+                  {% widthratio user_data.answer_num user_data.question_all 100 as percent%}
+                  <div class="percentage" data-percent="{{ percent }}"><span>{{ percent }}</span>%</div>
+
+              </div>
+              <p>你的排名：1/120</p>
+          </div>
+          <div class="col-lg-6 col-sm-6">
+              <div class="chart-info chart-position">
+                  <span class="increase"></span>
+                  <span>已刷</span>
+              </div>
+              <div class="chart-info">
+                  <span class="decrease"></span>
+                  <span>待刷</span>
+              </div>
+          </div>
+      </div>
+  </div>
+  <div class="panel-footer revenue-foot">
+      <ul>
+          <li class="first active">
+              <a href="javascript:;">
+                  <i class="icon-bullseye"></i>
+                  待刷
+              </a>
+          </li>
+          <li>
+              <a href="javascript:;">
+                  <i class=" icon-th-large"></i>
+                  已刷
+              </a>
+          </li>
+          <li class="last">
+              <a href="javascript:;">
+                  <i class=" icon-align-justify"></i>
+                  收藏
+              </a>
+          </li>
+      </ul>
+  </div>
+</section>
+<!--revenue end-->
+
+
+<!--近几个月刷题量 start-->
+<section class="panel">
+  <div class="revenue-head">
+      <span>
+          <i class="icon-bar-chart"></i>
+      </span>
+      <h3>近几个月刷题量</h3>
+  </div>
+<div class="panel-body">
+    <div class="custom-bar-chart">
+  <div class="bar">
+      <div class="title">JAN</div>
+      <div class="value tooltips" data-original-title="80%" data-toggle="tooltip" data-placement="top">80%</div>
+  </div>
+  <div class="bar doted">
+      <div class="title">FEB</div>
+      <div class="value tooltips" data-original-title="50%" data-toggle="tooltip" data-placement="top">50%</div>
+  </div>
+  <div class="bar ">
+      <div class="title">MAR</div>
+      <div class="value tooltips" data-original-title="40%" data-toggle="tooltip" data-placement="top">40%</div>
+  </div>
+  <div class="bar doted">
+      <div class="title">APR</div>
+      <div class="value tooltips" data-original-title="55%" data-toggle="tooltip" data-placement="top">55%</div>
+  </div>
+  <div class="bar">
+      <div class="title">MAY</div>
+      <div class="value tooltips" data-original-title="20%" data-toggle="tooltip" data-placement="top">20%</div>
+  </div>
+  <div class="bar doted">
+      <div class="title">JUN</div>
+      <div class="value tooltips" data-original-title="39%" data-toggle="tooltip" data-placement="top">39%</div>
+  </div>
+  <div class="bar">
+      <div class="title">JUL</div>
+      <div class="value tooltips" data-original-title="75%" data-toggle="tooltip" data-placement="top">75%</div>
+  </div>
+  <div class="bar doted">
+      <div class="title">AUG</div>
+      <div class="value tooltips" data-original-title="45%" data-toggle="tooltip" data-placement="top">45%</div>
+  </div>
+  <div class="bar ">
+      <div class="title">SEP</div>
+      <div class="value tooltips" data-original-title="50%" data-toggle="tooltip" data-placement="top">50%</div>
+  </div>
+  <div class="bar doted">
+      <div class="title">OCT</div>
+      <div class="value tooltips" data-original-title="42%" data-toggle="tooltip" data-placement="top">42%</div>
+  </div>
+  <div class="bar ">
+      <div class="title">NOV</div>
+      <div class="value tooltips" data-original-title="60%" data-toggle="tooltip" data-placement="top">60%</div>
+  </div>
+  <div class="bar doted">
+      <div class="title">DEC</div>
+      <div class="value tooltips" data-original-title="90%" data-toggle="tooltip" data-placement="top">90%</div>
+  </div>
+</div>
+</div>
+</section>
+<!--custom chart end-->
+
+
+<!--热门题目 start-->
+<section class="panel">
+      <div class="panel-body progress-panel">
+          <div class="task-progress">
+              <h1>热门算法题目</h1>
+              <p>答题人数最多的题目</p>
+          </div>
+      </div>
+      <table class="table table-hover personal-task">
+          <tbody>
+          {% for item in hot_question %}
+          <tr>
+              <td>{{ forloop.counter }}</td>
+              <td>
+                  <a href="{% url 'repo:question_detail' item.id %}" title="{{ item.title }}">{{ item.id }}. {{ item.title|truncatechars:10 }}</a>
+              </td>
+              <td>
+                  {% if item.grade == 1 %}
+                      <span class="label label-info">入门</span>
+                  {% elif  item.grade == 2 %}
+                      <span class="label label-info">简单</span>
+                  {% elif  item.grade == 3 %}
+                      <span class="label label-success">一般</span>
+                  {% elif  item.grade == 4 %}
+                      <span class="label label-danger">困难</span>
+                  {% elif  item.grade == 5 %}
+                      <span class="label label-danger">超难</span>
+                  {% endif %}
+              </td>
+          </tr>
+          {% endfor %}
+          </tbody>
+      </table>
+  </section>
+<!--work progress end-->
+
+<!--刷题类别排行 start-->
+<section class="panel">
+  <div class="panel-body progress-panel">
+      <div class="task-progress">
+          <h1>类别排行榜</h1>
+          <p>完成度排行</p>
+      </div>
+  </div>
+  <table class="table table-hover personal-task">
+      <tbody>
+      <tr>
+          <td>1</td>
+          <td>
+              <a href="#">网络题</a>
+          </td>
+          <td>
+              <span >
+                  <div class="progress progress-striped active progress-xs">
+                      <div class="progress-bar progress-bar-success"  role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                          <span class="sr-only">45% Complete</span>
+                      </div>
+                  </div>
+              </span>
+          </td>
+      </tr>
+      <tr>
+          <td>2</td>
+          <td>
+              <a href="#">网络题</a>
+          </td>
+          <td>
+              <span >
+                 <div class="progress progress-striped active progress-xs">
+                      <div class="progress-bar progress-bar-success"  role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                          <span class="sr-only">45% Complete</span>
+                      </div>
+                  </div>
+              </span>
+          </td>
+      </tr>
+      <tr>
+          <td>3</td>
+          <td>
+              <a href="#">网络题</a>
+          </td>
+          <td>
+              <span >
+                  <div class="progress progress-striped active progress-xs">
+                      <div class="progress-bar progress-bar-success"  role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                          <span class="sr-only">45% Complete</span>
+                      </div>
+                  </div>
+              </span>
+          </td>
+      </tr>
+      <tr>
+          <td>4</td>
+           <td>
+              <a href="#">网络题</a>
+          </td>
+          <td>
+              <span >
+                  <div class="progress progress-striped active progress-xs">
+                      <div class="progress-bar progress-bar-success"  role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                          <span class="sr-only">45% Complete</span>
+                      </div>
+                  </div>
+              </span>
+          </td>
+      </tr>
+      <tr>
+          <td>5</td>
+           <td>
+              <a href="#">网络题</a>
+          </td>
+          <td>
+              <span >
+                  <div class="progress progress-striped active progress-xs">
+                      <div class="progress-bar progress-bar-success"  role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 45%">
+                          <span class="sr-only">45% Complete</span>
+                      </div>
+                  </div>6
+              </span>
+          </td>
+      </tr>
+      </tbody>
+  </table>
+</section>
+<!--work progress end-->
+
+<!--近30天刷题用户排行榜 start-->
+<section class="panel">
+      <div class="panel-body progress-panel">
+          <div class="task-progress">
+              <h1>近30天刷题用户排行榜</h1>
+              <p></p>
+          </div>
+      </div>
+      <table class="table table-hover personal-task">
+          <tbody>
+          {% for item in hot_user %}
+              <tr>
+                  <td>{{ forloop.counter }}</td>
+                  <td>
+                      <a href="">{{ item.user__username }}</a>
+                  </td>
+                  <td>
+                      <span>{{ item.id__count }}/{{ user_data.question_all }}</span>
+                  </td>
+              </tr>
+          {% endfor %}
+          </tbody>
+      </table>
+  </section>
+<!--work progress end-->
+
+<script src="{% static 'js/jquery.js' %}"></script>
+<script src="{% static 'assets/jquery-easy-pie-chart/jquery.easy-pie-chart.js' %}"></script>
+<script src="{% static 'js/easy-pie-chart.js' %}"></script>
+<link href="{% static 'assets/jquery-easy-pie-chart/jquery.easy-pie-chart.css' %}" rel="stylesheet" type="text/css" media="screen"/>

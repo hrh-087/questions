@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="Mosaddek">
+    <meta name="keyword" content="FlatLab, Dashboard, Bootstrap, Admin, Template, Theme, Responsive, Fluid, Retina">
+    <link rel="shortcut icon" href="">
+    <title>Register</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/css/bootstrap-reset.css" rel="stylesheet">
+    <!--external css-->
+    <link href="/static/assets/font-awesome.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="/static/css/style.css" rel="stylesheet">
+    <link href="/static/css/style-responsive.css" rel="stylesheet">
+    <!-- 提示工具 -->
+</head>
+  <body class="login-body" style="">
+    <div class="container">
+      <form class="form-signin" id="register_form">
+        <input type="hidden" name="csrfmiddlewaretoken" value="g3KZFxZeQQTyYSuBHDpa4Z2Xb8hGVKkcPCig8CntTLTvgwTVeUQ7sgb34gubH6uf">
+        <h2 class="form-signin-heading">用户注册</h2>
+        <div class="login-wrap">
+            <input type="text" name="username" class="form-control" placeholder="请输入用户名" maxlength="24" required="" id="id_username">
+            <input type="password" name="password" class="form-control" placeholder="请输入密码" required="" id="id_password">
+            <input type="password" name="password2" class="form-control" placeholder="请再输入密码" required="" id="id_password2">
+            <input type="text" name="mobile" class="form-control" placeholder="请输入手机号" maxlength="24" required="" id="id_mobile">
+            <input type="text" name="mobile_captcha" style="width: 160px;padding: 10px" placeholder="验证码" error_messages="{&#39;invalid&#39;: &#39;验证码错误&#39;}" required="" id="id_mobile_captcha">
+            <input onclick="sendmessage(this,60);" type="button" value="发送短信" class="btn btn-info" style="height:38px;width: 125px;"><p></p>
+            <button class="btn btn-lg btn-login btn-block" type="button" id="register_btn">注册</button>
+            <label class="checkbox">
+                <span class="pull-right"> 已有帐号， <a href="http://192.168.189.100:8000/accounts/login/"> 请登录 </a></span>
+            </label>
+        </div>
+      </form>
+    </div>
+</body>
+</html>

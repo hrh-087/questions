@@ -1,0 +1,8 @@
+Django==1.11.20
+django-ckeditor==5.7.1
+django-js-asset==1.2.2
+django-redis==4.10.0
+easy-thumbnails==2.6
+Pillow==6.0.0
+pytz==2019.1
+redis==3.2.1

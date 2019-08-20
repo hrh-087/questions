@@ -1,0 +1,39 @@
+{% extends 'uc_base.html' %}
+{% load staticfiles %}
+{% block uc_content %}
+  <div class="row">
+      <div class="col-lg-12">
+          <section class="panel">
+              <header class="panel-heading">
+                  Dynamic Table
+              </header>
+              <table class="table table-striped border-top" id="sample_1">
+              <thead>
+              <tr>
+                  <th style="width:8px;"><input type="checkbox" class="group-checkable" data-set="#sample_1 .checkboxes" /></th>
+                  <th class="hidden-phone">问题</th>
+                  <th class="hidden-phone">我的答案</th>
+                  <th class="hidden-phone">收藏量</th>
+              </tr>
+              </thead>
+              <tbody>
+              {% for answer in my_answers %}
+              <tr class="odd gradeX">
+                  <td><input type="checkbox" class="checkboxes" value="1" /></td>
+                  <td><a href="{% url 'repo:question_detail' answer.question_id %}">{{ answer.question.title }}</a></td>
+                  <td>{{ answer.answer }}</td>
+                  <td>{{ answer.answers_collection_set.count }}</td>
+              </tr>
+              {% endfor %}
+              </tbody>
+              </table>
+          </section>
+      </div>
+  </div>
+  <!-- page end-->
+{% endblock %}
+{% block load_js %}
+    <script type="text/javascript" src="{% static 'assets/data-tables/jquery.dataTables.js' %}"></script>
+    <script type="text/javascript" src="{% static 'assets/data-tables/DT_bootstrap.js '%}"></script>
+    <script src="{% static 'js/dynamic-table.js' %}"></script>
+{% endblock %}

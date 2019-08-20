@@ -1,0 +1,52 @@
+{% load staticfiles %}
+<div class="timeline-messages">
+  {% for item in other_answer %}
+  <!-- Comment -->
+  <div class="msg-time-chat">
+      <a href="#" class="message-img"><img class="avatar" src="{{ user.avator.url }}" alt=""></a>
+      <div class="message-body msg-in">
+          <span class="arrow"></span>
+          <div class="text" style="line-height: 26px">
+              <p class="attribution"><a href="#">{{ item.user }}</a> {{ item.last_modify }}</p>
+              <p>{{ item.answer }}</p>
+              <a class="glyphicon glyphicon-heart{% if not item.collect_status %}-empty{% endif %} answer-id-{{ item.id }}" aria-hidden="true" href="javascript:void(0);" onclick="collection({{ item.id }})">收藏(<span>{{ item.collect_nums }}</span>)</a>
+{#              <a class="glyphicon glyphicon-heart{% if not item.collect_status %}-empty{% endif %} answer-collect" aria-hidden="true" href="javascript:void(0);" onclick="collection({{ item.id }})">收藏(<span>{{ item.collect_nums }}</span>)</a>#}
+          </div>
+      </div>
+  </div>
+  <!-- /comment -->
+  {% endfor %}
+</div>
+
+
+<script>
+    // todo => collection(answer_id)
+    // ajax => /apis/answer/collection/answer_id/ => sucess: 修改图标/收藏量
+    // django => url => view => return
+
+
+    function collection(answer_id) {
+        $.ajax({
+            url: '/apis/answer/collection/'+ answer_id +'/',
+            type: 'GET',
+{#            dataType: 'json',#}
+            success: function (data) {
+                //alert(data);
+                if(data.code == 200){
+                    obj_a = $(".answer-id-"+answer_id);
+                    obj_span = $(".answer-id-"+answer_id+" span");
+                    if(data.msg.status){
+                        obj_a.attr("class", "glyphicon glyphicon-heart "+"answer-id-"+answer_id)
+                    }else{
+                        obj_a.attr("class", "glyphicon glyphicon-heart-empty "+"answer-id-"+answer_id)
+                    }
+                    obj_span.html(data.msg.collections);
+                }
+            },
+            error: function () {
+                alert('error');
+            }
+        })
+    }
+
+</script>
